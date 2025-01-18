@@ -48,7 +48,9 @@ class RoleController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $role = Role::create($request->all());
+        $role = Role::create([
+            'name' => strtolower($request->input('name')),
+        ]);
 
         return response()->json([
             'status' => 'success',
@@ -112,7 +114,10 @@ class RoleController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $role->update($request->all());
+        $role->update([
+            'name' => strtolower($request->input('name')),
+        ]);
+
         return response()->json([
             'message' => 'Role updated successfully.',
             'role' => $role

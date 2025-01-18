@@ -64,10 +64,10 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'User created successfully',
                 'data' => [
-            'user' => $user,
-            'roles' => $user->roles->pluck('name'),
-            'files' => $user->files->pluck('path'),
-        ],
+                    'user' => $user,
+                    'roles' => $user->roles->pluck('name'),
+                    'files' => $user->files->pluck('path'),
+                ],
                 'token' => $token
             ], 201);
 

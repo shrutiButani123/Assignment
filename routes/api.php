@@ -16,25 +16,26 @@ use App\Http\Controllers\RoleController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::post('register', [UserController::class, 'store']);
 Route::get('login', [UserController::class, 'login'])->name('login');
 
 
 Route::group(['middleware' => ['auth:api']], function () {
-    // Route::get('/users/{id}', [UserController::class, 'edit']);
     Route::post('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
     Route::post('users', [UserController::class, 'getUsers']);
 
-    Route::get('/roles', [RoleController::class, 'index']);
-    Route::post('/role', [RoleController::class, 'store']);
-    Route::get('/roles/{id}', [RoleController::class, 'edit']);
-    Route::post('/roles/{id}', [RoleController::class, 'update']);
-    Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::get('/roles', [RoleController::class, 'index']);
+        Route::post('/role', [RoleController::class, 'store']);
+        Route::get('/roles/{id}', [RoleController::class, 'edit']);
+        Route::post('/roles/{id}', [RoleController::class, 'update']);
+        Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+    });
+
+    Route::get('/dashboard',function (Request $request) {
+        return auth()->user();
+    })->name('dashboard');
 
     Route::post('/logout', [UserController::class, 'logout']);
 
